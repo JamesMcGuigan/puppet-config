@@ -1,0 +1,51 @@
+# don't let these commands disable aliases
+alias sudo='sudo '
+alias time='time '
+alias nice='nice '
+
+# prefered options for commands
+alias mv='mv -vi '
+alias rm='rm -vi '
+alias cp='cp -vi '
+alias ln='ln -v '
+alias ls='ls -C -F '
+alias bc='bc -ql '
+alias nano='nano -w '
+alias du='du -k '
+alias df='df -kT '
+alias bzip2='bzip2 -k '
+alias whois='whois '
+alias skill='skill -v '
+alias killall='killall -v '
+alias head='head -n 20 '
+alias tail='tail -n 20 '
+
+if [[ ! `xargs -v 2>&1 | grep gnu.org` ]];  then
+    alias xargs='xargs -o '
+fi;
+
+# Auto sudo vim
+vi () {
+    if   [ $1 == '' ];              then /usr/bin/vim
+    elif [ ! -f $1 ] || [ -w $1  ]; then /usr/bin/vim ${@//:/ +};  # filename.js:45 -> filename +45
+    else
+        echo -n "File is readonly. Edit as root? (Y/n): "
+        read -n 1 yn; echo;
+        if [ "$yn" = 'n' ] || [ "$yn" = 'N' ];
+          then      /usr/bin/vim ${*//:/ +};
+          else sudo /usr/bin/vim ${*//:/ +};
+        fi
+    fi
+}
+
+# wrap screen prompts around ssh and telnet commands
+function ssh() {
+    echo -n -e "\033k$1\033\134"
+    /usr/bin/ssh $@
+    echo -n -e "\033k`hostname`\033\134"
+}
+function telnet() {
+    echo -n -e "\033k$1\033\134"
+    /usr/bin/telnet $@
+    echo -n -e "\033k`hostname`\033\134"
+}

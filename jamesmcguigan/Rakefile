@@ -1,0 +1,73 @@
+username = "root";
+hostname = "jamesmcguigan.com";
+repo     = "git@github.com:JamesMcGuigan/jamesmcguigan.com.git";
+
+
+desc "Reboot #{hostname}"
+task :reboot do |t, args|
+  sh "ssh #{username}@#{hostname} 'echo; echo `hostname` is rebooting; reboot;'"
+end
+
+desc "Bootstrap Puppet onto #{hostname}"
+task :bootstrap do |t, args|
+  commands = <<-EOF
+    ssh-keyscan -H github.com | tee -a /etc/ssh/ssh_known_hosts
+    apt-get update  -y
+    apt-get install -y puppet git rsync
+  EOF
+  sh "ssh #{username}@#{hostname} '#{commands}'"
+end
+
+task :puppet, :package do |t, args|
+    package = args[:package] || "init"
+
+    if( Rake::Task["syntax"].execute() )
+        puts "Applying puppet to #{username}@#{hostname} with package manifests/#{package}.pp"
+
+        Rake::Task["rsync_puppet"].execute()
+
+        commands = <<-BOOTSTRAP
+            puppet apply --modulepath=/root/puppet/modules/ /root/puppet/manifests/#{package}.pp --verbose --summarize --debug
+        BOOTSTRAP
+        sh "ssh #{username}@#{hostname} '#{commands}'"
+    end
+end
+
+desc "deploy website to #{hostname}"
+task :deploy do |t, args|
+    sh "rsync ../ -r --delete --exclude 'puppet' ./ #{username}@#{hostname}:/var/www/#{hostname}"
+
+    commands = <<-BOOTSTRAP
+        service supervisor restart
+    BOOTSTRAP
+    sh "ssh #{username}@#{hostname} '#{commands}'"
+end
+
+
+desc "rsync Puppet to #{hostname}"
+task :rsync_puppet do |t, args|
+    sh "rsync -r --delete --exclude '.vagrant' ./ #{username}@#{hostname}:puppet"
+end
+
+
+
+
+
+desc "Check Puppet and package.json syntax before deploy"
+task :syntax do
+    sh 'find ./ -name "*.pp" | xargs puppet parser validate'
+    sh 'find ./ -name "*.pp" -print -exec puppet-lint --no-names_containing_dash-check  --no-double_quoted_strings-check --no-arrow_alignment-check --no-80chars-check --no-documentation-check --no-variable_scope-check --no-2sp_soft_tabs-check {} \;'
+
+    # npm install -g jsonlint
+    sh 'find ../ -depth 2 -name package.json | xargs -t -L1 jsonlint -q'
+end
+
+desc "Check code has been fully pushed to github"
+task :git_check do
+  if File.directory?(File.dirname(__FILE__)+'/../.git')
+    # Double check that everything is pushed to git before deployment
+    sh "git push --dry-run"; puts;
+    sh "git status";         puts;
+  end
+end
+

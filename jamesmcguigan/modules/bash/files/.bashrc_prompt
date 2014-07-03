@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+    xterm*|rxvt*) PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"' ;;
+    dumb*)        PS1=$PROMPT_COMMAND'\u@\h:\w\$ ' ;;
+    *)            ;;
+esac
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND" # After each command, save and reload history
+
+
+# Define some colors first:
+     RED='\[\e[31;1m\]'
+   GREEN='\[\e[32;1m\]'
+  YELLOW='\[\e[33;1m\]'
+    BLUE='\[\e[34;1m\]'
+  PURPLE='\[\e[35;1m\]'
+    cyan='\[\e[36m\]'
+    CYAN='\[\e[36;1m\]'
+   WHITE='\[\e[37;1m\]'
+      NC='\[\e[0m\]'
+  DOLLAR='\$'
+  GIT_PS1="\$(__git_ps1 '$WHITE|$RED%s')"
+  if [ "$TERM" == "screen" ]; then SCREENPROMPT='\[\033k\033\\\]'; else SCREENPROMPT=''; fi;
+
+# set a fancy prompt
+#PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$ $NC"
+#PS1="$CYAN[\t]$GREEN\u$WHITE@$GREEN${HOSTNAME}$WHITE:$YELLOW\w$GIT_PS1$WHITE$SCREENPROMPT$DOLLAR $NC"
+PS1="$GREEN[\t]$PURPLE\u$WHITE@$PURPLE${HOSTNAME}$WHITE:$YELLOW\w$GIT_PS1$WHITE$SCREENPROMPT$DOLLAR $NC"
+#PS1="$PURPLE[\t]${BLUE}dev$NC:\w$DOLLAR "
+#PS1=$cyan'[\t] \[\e]0;\w\a\]\[\e[32m\]\u:\[\e[33m\]\w\[\e[0m\]\$ '
+alias blackprompt='PS1="$BLUE[\t]$NC\u@\h$BOLD:$NC\w $DOLLAR "; ';

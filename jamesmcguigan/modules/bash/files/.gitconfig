@@ -1,0 +1,24 @@
+[user]
+	name  = James McGuigan
+	email = james.mcguigan@gmail.com
+[log]
+	decorate = full
+[color]
+	ui = auto
+	interactive = auto
+[pager]
+	status = false
+	diff = true
+	show-branch = true
+[alias]
+	st = status
+	ci = commit
+	co = checkout
+	staged = diff --cached
+	unstaged = diff
+	both = diff HEAD
+	oneline = log --oneline
+	amend = commit --amend
+	stat = status --short
+[http]
+	postBuffer = 2M
