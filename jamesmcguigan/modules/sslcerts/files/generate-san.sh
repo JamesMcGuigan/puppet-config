@@ -15,13 +15,13 @@ FQDN=jamesmcguigan.com
 Email=james.mcguigan@gmail.com
 
 
-# Generate Private Key
-openssl genrsa -des3 -out jamesmcguigan.san.key.password 2048
+## Generate Private Key
+openssl genrsa -des3 -passout pass:foobar -out jamesmcguigan.san.key.password 2048
 
-#  Convert the private key to an unencrypted format
-openssl rsa -in jamesmcguigan.san.key.password -out jamesmcguigan.san.key
+##  Convert the private key to an unencrypted format
+openssl rsa -passin pass:foobar -in jamesmcguigan.san.key.password -out jamesmcguigan.san.key
 
-#  Create the certificate signing request
+##  Create the certificate signing request
 openssl req -new -key jamesmcguigan.san.key -out jamesmcguigan.san.csr <<EOF
 $Country
 $State
@@ -34,7 +34,7 @@ $Email
 .
 EOF
 
-# Sign the certificate with extensions
+## Sign the certificate with extensions
 openssl x509 -req -extensions v3_req -days 365 -in jamesmcguigan.san.csr -signkey jamesmcguigan.san.key -out jamesmcguigan.san.crt -extfile jamesmcguigan.san.conf
 #    -CA ../rootCA/jamesmcguigan.rootCA.crt -CAkey ../rootCA/jamesmcguigan.rootCA.key -CAcreateserial
 

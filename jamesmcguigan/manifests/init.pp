@@ -24,5 +24,7 @@ node default {
   include mongodb
 }
 node /jamesmcguigan/ inherits default {
+  include nodejs
   include website_jamesmcguigan
+  include website_jamesmcguigan_infographic
 }

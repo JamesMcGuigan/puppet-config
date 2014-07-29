@@ -13,6 +13,10 @@ class nodejs {
   package { 'nodejs':
     ensure  => installed
   } ->
+  file { "/usr/bin/node":
+    ensure => link,
+    target => "/usr/bin/nodejs",
+  } ->
   package { 'npm':
     ensure  => installed,
     require => Package['nodejs'],

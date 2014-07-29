@@ -34,13 +34,13 @@ task :puppet, :package do |t, args|
 end
 
 desc "deploy website to #{hostname}"
-task :deploy do |t, args|
-    sh "rsync ../ -r --delete --exclude 'puppet' ./ #{username}@#{hostname}:/var/www/#{hostname}"
+task :deploy, :hostname do |t, args|
+    sh "rsync -r --delete --exclude 'puppet' ~/websites/#{args[:hostname]} #{username}@#{args[:hostname]}:/var/www/"
 
     commands = <<-BOOTSTRAP
         service supervisor restart
     BOOTSTRAP
-    sh "ssh #{username}@#{hostname} '#{commands}'"
+    sh "ssh #{username}@#{args[:hostname]} '#{commands}'"
 end
 
 

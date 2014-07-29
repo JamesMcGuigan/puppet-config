@@ -1,0 +1,49 @@
+# SSH Private Keys are private #
+################################
+id_rsa
+*.key
+*.key.password
+
+
+# Explicit Directory Removes #
+##############################
+_old
+
+# Development Files #
+#####################
+node_modules
+bower
+*.iml
+.sass-cache
+.idea
+.vagrant
+.grunt
+*.broken*
+coverage
+lib-cov
+build/Release
+
+# Logs and databases #
+######################
+*.log
+
+# OS generated files #
+######################
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Temp Files #
+##############
+*.swp
+*.swo
+*~
+~*
+*.lock
+
+# Runtime data #
+################
+pids
+*.pid
+*.seed
