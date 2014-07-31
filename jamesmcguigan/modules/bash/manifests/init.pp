@@ -10,6 +10,8 @@ class bash {
   package { 'screen':          ensure  => installed }
   package { 'wget':            ensure  => installed }
   package { 'ImageMagick':     ensure  => installed }
+  package { 'GraphicsMagick':  ensure  => installed }
+
 
 
   case $::operatingsystem {
