@@ -1,15 +1,15 @@
 username = "root";
-hostname = "jamesmcguigan.com";
-repo     = "git@github.com:JamesMcGuigan/jamesmcguigan.com.git";
 
-
-desc "Reboot #{hostname}"
-task :reboot do |t, args|
+desc "Reboot :hostname"
+task :reboot, :hostname do |t, args|
+  hostname = args[:hostname];
   sh "ssh #{username}@#{hostname} 'echo; echo `hostname` is rebooting; reboot;'"
 end
 
-desc "Bootstrap Puppet onto #{hostname}"
-task :bootstrap do |t, args|
+desc "Bootstrap Puppet onto :hostname"
+task :bootstrap, :hostname do |t, args|
+  hostname = args[:hostname];
+
   commands = <<-EOF
     ssh-keyscan -H github.com | tee -a /etc/ssh/ssh_known_hosts
     apt-get update  -y
@@ -18,40 +18,60 @@ task :bootstrap do |t, args|
   sh "ssh #{username}@#{hostname} '#{commands}'"
 end
 
-task :puppet, :package do |t, args|
-    package = args[:package] || "init"
+desc "Run Puppet :package on :hostname"
+task :puppet, :hostname, :package do |t, args|
+    package  = args[:package]  || "init"
+    hostname = args[:hostname];
 
     if( Rake::Task["syntax"].execute() )
         puts "Applying puppet to #{username}@#{hostname} with package manifests/#{package}.pp"
 
-        Rake::Task["rsync_puppet"].execute()
+        Rake::Task["rsync_puppet"].execute(args)
 
         commands = <<-BOOTSTRAP
             puppet apply --modulepath=/root/puppet/modules/ /root/puppet/manifests/#{package}.pp --verbose --summarize --debug
         BOOTSTRAP
         sh "ssh #{username}@#{hostname} '#{commands}'"
+
+        Rake::Task["service_restart"].execute(args)
     end
 end
 
-desc "deploy website to #{hostname}"
-task :deploy, :hostname do |t, args|
-    sh "rsync -rz --delete --exclude 'puppet' --exclude 'data' ~/websites/#{args[:hostname]}      #{username}@#{args[:hostname]}:/var/www/"
-    sh "rsync -vrz ~/websites/#{args[:hostname]}/data #{username}@#{args[:hostname]}:/var/www/#{args[:hostname]}/"
+desc "Deploy ~/websites/:website to #{username}@:hostname:/var/www/"
+task :deploy, :hostname, :website do |t, args|
+    hostname = args[:hostname] || ""
+    website  = args[:website]  || args[:hostname]
+
+    sh "rsync -rz --delete --exclude 'puppet' --exclude 'data' ~/websites/#{website}      #{username}@#{hostname}:/var/www/"
+    sh "rsync -vrz ~/websites/#{website}/data #{username}@#{hostname}:/var/www/#{website}/"
 
     commands = <<-BOOTSTRAP
-        service supervisor restart
-        service nginx restart
+      cd /var/www/#{website};
+      npm install;
+      npm run production
     BOOTSTRAP
-    sh "ssh #{username}@#{args[:hostname]} '#{commands}'"
+    sh "ssh #{username}@#{hostname} '#{commands}'"
+
+    Rake::Task["service_restart"].execute(args)
 end
 
 
-desc "rsync Puppet to #{hostname}"
-task :rsync_puppet do |t, args|
-    sh "rsync -r --delete --exclude '.vagrant' ./ #{username}@#{hostname}:puppet"
+task :service_restart, :hostname do |t, args|
+  hostname = args[:hostname]
+
+  commands = <<-BOOTSTRAP
+    service supervisor restart
+    service nginx restart
+  BOOTSTRAP
+  sh "ssh #{username}@#{hostname} '#{commands}'"
 end
 
+desc "rsync puppet to :hostname"
+task :rsync_puppet, :hostname do |t, args|
+  hostname = args[:hostname]
 
+  sh "rsync -r --delete --exclude '.vagrant' ./ #{username}@#{hostname}:puppet"
+end
 
 
 
@@ -72,4 +92,3 @@ task :git_check do
     sh "git status";         puts;
   end
 end
-

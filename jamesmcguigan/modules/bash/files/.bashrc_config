@@ -5,6 +5,7 @@ export    LESS=-R
 export GREP_OPTIONS='--color'
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 export PATH=$PATH:/usr/lib/jvm/java-7-oracle/bin
+export PATH=$PATH:./node_modules/.bin
 
 shopt -s histappend                # Make Bash append rather than overwrite the history on disk
 export HISTCONTROL=ignoredups      # don't put duplicate lines in the history. See bash(1) for more options
