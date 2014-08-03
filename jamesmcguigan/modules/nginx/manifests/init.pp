@@ -29,7 +29,7 @@ class nginx {
     source  => 'puppet:///modules/nginx/mime.types',
     owner   => root,
     group   => root,
-    mode   => '0644',
+    mode   => '0600',
     require => Package['nginx'],
   }
 
@@ -68,7 +68,17 @@ class nginx {
     source  => 'puppet:///modules/nginx/nginx.conf',
     owner   => root,
     group   => root,
-    mode   => '0644',
+    mode   => '0600',
+    require => [ Package['nginx'] ],
+    notify  => [ Service['nginx'] ]
+  }
+
+  file { '/etc/nginx/conf/':
+    source  => 'puppet:///modules/nginx/conf',
+    recurse => true,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
     require => [ Package['nginx'] ],
     notify  => [ Service['nginx'] ]
   }

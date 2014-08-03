@@ -18,6 +18,12 @@ task :bootstrap, :hostname do |t, args|
   sh "ssh #{username}@#{hostname} '#{commands}'"
 end
 
+desc "Run Puppet and deploy :hostname"
+task :puppet_deploy, :hostname, :website, :package do |t, args|
+  Rake::Task["puppet"].execute(args)
+  Rake::Task["deploy"].execute(args)
+end
+
 desc "Run Puppet :package on :hostname"
 task :puppet, :hostname, :package do |t, args|
     package  = args[:package]  || "init"
@@ -42,8 +48,8 @@ task :deploy, :hostname, :website do |t, args|
     hostname = args[:hostname] || ""
     website  = args[:website]  || args[:hostname]
 
-    sh "rsync -rz --delete --exclude 'puppet' --exclude 'data' ~/websites/#{website}      #{username}@#{hostname}:/var/www/"
-    sh "rsync -vrz ~/websites/#{website}/data #{username}@#{hostname}:/var/www/#{website}/"
+    sh "rsync -arz --delete --exclude 'puppet' --exclude 'data' ~/websites/#{website}      #{username}@#{hostname}:/var/www/"
+    sh "rsync -arz ~/websites/#{website}/data #{username}@#{hostname}:/var/www/#{website}/"
 
     commands = <<-BOOTSTRAP
       cd /var/www/#{website};
@@ -70,7 +76,7 @@ desc "rsync puppet to :hostname"
 task :rsync_puppet, :hostname do |t, args|
   hostname = args[:hostname]
 
-  sh "rsync -r --delete --exclude '.vagrant' ./ #{username}@#{hostname}:puppet"
+  sh "rsync -arz --delete --exclude '.vagrant' ./ #{username}@#{hostname}:puppet"
 end
 
 
