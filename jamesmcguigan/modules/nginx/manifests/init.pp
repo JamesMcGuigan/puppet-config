@@ -1,3 +1,5 @@
+### See website_* packages for individual config files
+
 class nginx {
   require sslcerts
 

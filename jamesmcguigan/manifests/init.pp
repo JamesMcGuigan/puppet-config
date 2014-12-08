@@ -27,4 +27,5 @@ node /jamesmcguigan/ inherits default {
   include nodejs
   include website_jamesmcguigan
   include website_jamesmcguigan_infographic
+  include website_oliverjameshymans_proxy
 }

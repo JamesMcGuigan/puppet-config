@@ -1,0 +1,21 @@
+# HTTP is disabled for API and CMS servers
+server {
+    listen 80;
+    server_name  oliverjameshymans.jamesmcguigan.com;
+    access_log   /var/log/nginx/oliverjameshymans-proxy-access.log;
+    error_log    /var/log/nginx/oliverjameshymans-proxy-error.log;
+
+    proxy_set_header        Accept-Encoding   "";
+    proxy_set_header        Host              www.oliverjameshymans.com;
+    proxy_set_header        X-Real-IP         $remote_addr;
+    #proxy_set_header        X-Forwarded-For   $proxy_add_x_forwarded_for;
+    #proxy_set_header        X-Forwarded-Proto $scheme;
+    #add_header              Front-End-Https   on;
+
+    location / {
+        proxy_pass  http://www.oliverjameshymans.com/;
+        sub_filter  </head> '<style>#WIX_ADS { display: none; } #SITE_ROOT { padding-bottom: 0 !important; } </style></head>';
+        sub_filter_once on;
+    }
+    proxy_redirect     off;
+}
