@@ -1,5 +1,5 @@
 # http://www.craigdunn.org/2012/05/239/
-node default {
+class role::server {
   Exec { path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin', logoutput => true, }
 
   case $domain {
@@ -12,7 +12,9 @@ node default {
     Ubuntu:  { }
     default: { fail("Unknown OS: $operatingsystem") }
   }
-
+  
+class role::server::webserver inherits role::server { 
+  include sshd
   include sshd
   include ntp
   include bash
@@ -23,9 +25,8 @@ node default {
   include rubygems
   include mongodb
 }
-node /jamesmcguigan/ inherits default {
-  include nodejs
+node /jamesmcguigan/ {
+  include role::server::webserver
   include website_jamesmcguigan
   include website_jamesmcguigan_infographic
-  include website_oliverjameshymans_proxy
 }

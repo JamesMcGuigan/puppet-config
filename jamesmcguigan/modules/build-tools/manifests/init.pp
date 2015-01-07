@@ -4,7 +4,7 @@ class build-tools {
       package { 'linux-headers-generic': ensure  => installed }
       package { 'build-essential':       ensure  => installed }
     }
-    CentoOS: {
+    CentOS: {
       package { 'readline-devel': ensure  => installed } ->
       package { 'ncurses-devel':  ensure  => installed } ->
       package { 'libffi-devel':   ensure  => installed } ->
