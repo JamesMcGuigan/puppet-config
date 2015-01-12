@@ -3,16 +3,16 @@ class role::server {
   Exec { path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin', logoutput => true, }
 
   case $domain {
-    /local/:           { $node_env = 'development' }
-    /jamesmcguigan/:   { $node_env = 'production'  }
-    default:           { $node_env = 'production'  }
+    /local/:         { $node_env = 'development' }
+    /jamesmcguigan/: { $node_env = 'production' }
+    default:         { $node_env = 'production' }
   }
   case $::operatingsystem {
     CentOS:  { require yum }
     Ubuntu:  { }
     default: { fail("Unknown OS: $operatingsystem") }
   }
-  
+}
 class role::server::webserver inherits role::server { 
   include sshd
   include sshd
@@ -27,6 +27,7 @@ class role::server::webserver inherits role::server {
 }
 node /jamesmcguigan/ {
   include role::server::webserver
-  include website_jamesmcguigan
+  #include website_jamesmcguigan
   include website_jamesmcguigan_infographic
+  include website_liatandco
 }

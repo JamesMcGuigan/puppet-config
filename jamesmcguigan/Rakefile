@@ -1,4 +1,5 @@
 username = "root";
+hostname = "jamesmcguigan.com"
 
 desc "Reboot :hostname"
 task :reboot, :hostname do |t, args|
@@ -18,13 +19,8 @@ task :bootstrap, :hostname do |t, args|
   sh "ssh #{username}@#{hostname} '#{commands}'"
 end
 
-desc "Run Puppet and deploy :hostname"
-task :puppet_deploy, :hostname, :website, :package do |t, args|
-  Rake::Task["puppet"].execute(args)
-  Rake::Task["deploy"].execute(args)
-end
 
-desc "Run Puppet :package on :hostname"
+desc "Run Puppet :package on :hostname | rake puppet[jamesmcguigan.com,deploy_liatandco]"
 task :puppet, :hostname, :package do |t, args|
     package  = args[:package]  || "init"
     hostname = args[:hostname];
@@ -43,8 +39,8 @@ task :puppet, :hostname, :package do |t, args|
     end
 end
 
-desc "Deploy ~/websites/:website to #{username}@:hostname:/var/www/"
-task :deploy, :hostname, :website do |t, args|
+desc "Rsync deploy ~/websites/:website to #{username}@:hostname:/var/www/"
+task :rsync_deploy, :hostname, :website do |t, args|
     hostname = args[:hostname] || ""
     website  = args[:website]  || args[:hostname]
 

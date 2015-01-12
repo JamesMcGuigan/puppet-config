@@ -4,7 +4,7 @@ class bash {
   package { 'curl':            ensure  => installed }
   package { 'fortune-mod':     ensure  => installed }
   package { 'git':             ensure  => installed }
-  package { 'jsl':             ensure  => installed }
+#  package { 'jsl':             ensure  => installed }
   package { 'man':             ensure  => installed }
   package { 'moreutils':       ensure  => installed }
   package { 'nmap':            ensure  => installed }
