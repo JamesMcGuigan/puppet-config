@@ -28,4 +28,8 @@ class rubygems {
     creates => $operatingsystem ? { CentOS => '/usr/bin/compass', Ubuntu => '/usr/local/bin/compass' },
     require => [ Exec['rake'] ]
   }
+
+  package { 'bundler':
+    ensure  => installed,
+  }
 }
