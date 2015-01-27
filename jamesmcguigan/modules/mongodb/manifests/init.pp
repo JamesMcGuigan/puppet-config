@@ -29,11 +29,17 @@ class mongodb {
       }
     }
   } ->
+  file { ['/data','/data/db', '/var/log/mongodb']:
+    ensure => "directory",
+    owner  => mongodb,
+    group  => mongodb,
+    mode   => '0750',
+  } ->
   file { $mongoconf:
     name    => "/etc/$mongoconf",
     content => template('mongodb/mongodb.conf.erb'),
-    owner   => root,
-    group   => root,
+    owner   => mongodb,
+    group   => mongodb,
     mode    => '0644',
     notify  => Service[$mongod],
   } ->

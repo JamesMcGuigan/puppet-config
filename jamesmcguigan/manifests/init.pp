@@ -13,8 +13,8 @@ class role::server {
     default: { fail("Unknown OS: $operatingsystem") }
   }
 }
-class role::server::webserver inherits role::server { 
-  include sshd
+class role::server::webserver inherits role::server {
+  include swapfile
   include sshd
   include ntp
   include bash
@@ -27,7 +27,8 @@ class role::server::webserver inherits role::server {
 }
 node /jamesmcguigan/ {
   include role::server::webserver
-  #include website_jamesmcguigan
-  include website_jamesmcguigan_infographic
+  include website_jamesmcguigan
+  include website_statistical_learning
+  include website_infographic_generator
   include website_liatandco
 }

@@ -1,13 +1,13 @@
 [program:infographic.jamesmcguigan.com]
-environment=NODE_ENV=development,PORT_HTTP=4000,PORT_HTTPS=4001
-command=/usr/bin/node /var/www/infographic.jamesmcguigan.com/InfographicGenerator.js
+environment=
+command=/usr/bin/node /var/www/infographic.jamesmcguigan.com/InfographicGenerator.js NODE_ENV=development PORT_HTTP=3010 PORT_HTTPS=3011
 stdout_logfile=/var/log/supervisor/%(program_name)s.log
 stderr_logfile=/var/log/supervisor/%(program_name)s.log
 autorestart=true
 
 [program:production.infographic.jamesmcguigan.com]
-environment=NODE_ENV=production,PORT_HTTP=4002,PORT_HTTPS=4003
-command=/usr/bin/node /var/www/infographic.jamesmcguigan.com/InfographicGenerator.js
+environment=
+command=/usr/bin/node /var/www/infographic.jamesmcguigan.com/InfographicGenerator.js NODE_ENV=production  PORT_HTTP=3012 PORT_HTTPS=3013
 stdout_logfile=/var/log/supervisor/%(program_name)s.log
 stderr_logfile=/var/log/supervisor/%(program_name)s.log
 autorestart=true

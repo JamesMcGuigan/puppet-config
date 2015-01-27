@@ -7,7 +7,9 @@ tar -xzf /root/build/liatandco.com.tgz -C /var/www-deploy/ &&
 cd /var/www-deploy/liatandco.com &&
 npm cache clean &&
 npm install &&
+npm list 2>&1 | awk '/missing:/ { print $4 }' | sed 's/,//' | xargs npm install &&
 bower install --allow-root &&
+compass compile &&
 
 (if [ -d /var/www-deploy/liatandco.com ]; then
     if [ -d /var/www/liatandco.com ]; then

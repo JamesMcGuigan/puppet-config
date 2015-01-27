@@ -1,19 +1,21 @@
 # mongodb.conf
 
 # Where to store the data.
-dbpath=/var/lib/mongo
+
+# Note: if you run mongodb as a non-root user (recommended) you may
+# need to create and set permissions for this directory manually,
+# e.g., if the parent directory isn't mutable by the mongodb user.
+dbpath=/data/db
 
 #where to log
-logpath=/var/log/mongo/mongod.log
+logpath=/var/log/mongodb/mongodb.log
 
 logappend=true
 
-#puppet_domain=<%= @domain %>
-bind_ip = <%= @bind_ip %>
 #port = 27017
 
-# Enable journaling, http://www.mongodb.org/display/DOCS/Journaling
-journal=true
+# Disables write-ahead journaling
+# nojournal = true
 
 # Enables periodic logging of CPU utilization and I/O wait
 #cpu = true
@@ -38,10 +40,7 @@ journal=true
 #   2=R
 #   3=both
 #   7=W+some reads
-#oplog = 0
-
-# Diagnostic/debugging option
-#nocursors = true
+#diaglog = 0
 
 # Ignore query hints
 #nohints = true
@@ -73,7 +72,8 @@ journal=true
 
 # Replication Options
 
-# in replicated mongo databases, specify here whether this is a slave or master
+# in master/slave replicated mongo databases, specify here whether
+# this is a slave or master
 #slave = true
 #source = master.example.com
 # Slave only: specify a single database to replicate
@@ -82,17 +82,5 @@ journal=true
 #master = true
 #source = slave.example.com
 
-# Address of a server to pair with.
-#pairwith = <server:port>
-# Address of arbiter server.
-#arbiter = <server:port>
-# Automatically resync if slave data is stale
-#autoresync
-# Custom size for replication operation log.
-#oplogSize = <MB>
-# Size limit for in-memory storage of op ids.
-#opIdMem = <bytes>
-
-<% if @replSet %>
-replSet = <%= @replSet %>
-<% end %>
+# in replica set configuration, specify the name of the replica set
+# replSet = setname

@@ -13,7 +13,7 @@ class sshd {
   augeas { 'ssh_config':
     context => "/files/etc/ssh/sshd_config",
     changes => [
-      'set PermitRootLogin        without-password',
+      'set PermitRootLogin        yes', # without-password',
       'set RSAAuthentication      yes',
       'set PubkeyAuthentication   yes',
       'set PasswordAuthentication yes',

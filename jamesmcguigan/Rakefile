@@ -22,8 +22,8 @@ end
 
 desc "Run Puppet :package on :hostname | rake puppet[jamesmcguigan.com,deploy_liatandco]"
 task :puppet, :hostname, :package do |t, args|
-    package  = args[:package]  || "init"
     hostname = args[:hostname];
+    package  = args[:package]  || "init"
 
     if( Rake::Task["syntax"].execute() )
         puts "Applying puppet to #{username}@#{hostname} with package manifests/#{package}.pp"
@@ -37,6 +37,10 @@ task :puppet, :hostname, :package do |t, args|
 
         Rake::Task["service_restart"].execute(args)
     end
+end
+task :deploy, :hostname, :package do |t, args|
+  args[:package] = args[:package]  || "deploy"
+  Rake::Task["puppet"].execute(args)
 end
 
 desc "Rsync deploy ~/websites/:website to #{username}@:hostname:/var/www/"

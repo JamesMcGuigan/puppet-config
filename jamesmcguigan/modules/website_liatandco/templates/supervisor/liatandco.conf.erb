@@ -1,6 +1,6 @@
 [program:liatandco.com]
-environment=NODE_ENV=development,PORT_HTTP=3003,PORT_HTTPS=3003
-command=/usr/bin/node /var/www/liatandco.com/Server.js
+environment=
+command=/usr/bin/node /var/www/liatandco.com/Server.js NODE_ENV=development PORT_HTTP=3003 PORT_HTTPS=3003
 stdout_logfile=/var/log/supervisor/%(program_name)s.log
 stderr_logfile=/var/log/supervisor/%(program_name)s.log
 autorestart=true

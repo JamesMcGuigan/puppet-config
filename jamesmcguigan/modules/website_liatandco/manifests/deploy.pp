@@ -1,4 +1,5 @@
 class website_liatandco::deploy {
+  include website_liatandco
 
   file {[
     '/root/puppet/modules/website_liatandco/files/update-git.sh',

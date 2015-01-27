@@ -1,19 +1,14 @@
 #!/bin/bash -x
 export HOME=/root   # node-gyp requires that the user's home directory is specified in either of the environmental variables HOME or USERPROFILE
 
-cd /root/github/liatandco.com/
+cd /root/github/statistical-learning/
 bundle install &&
 npm cache clean &&
 npm install &&
 npm list 2>&1 | awk '/missing:/ { print $4 }' | sed 's/,//' | xargs npm install &&
 yes | bower install --allow-root &&
 npm run production &&
-(
-if [ ! -f /root/github/liatandco.com/sslcert/san/liatandco.san.crt ]; then
-    /root/github/liatandco.com/sslcert/san/generate-san.sh
-fi;
-) &&
 mkdir -p /root/build/ &&
-rm    -f /root/build/liatandco.com.tgz &&
+rm    -f /root/build/statistical-learning.tgz &&
 cd       /root/github/ &&
-tar -czf /root/build/liatandco.com.tgz liatandco.com
+tar -czf /root/build/statistical-learning.tgz statistical-learning

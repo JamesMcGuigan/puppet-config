@@ -1,0 +1,13 @@
+[program:statistical-learning.jamesmcguigan.com]
+environment=
+command=/usr/bin/node /var/www/statistical-learning/Server.js NODE_ENV=development PORT_HTTP=3020 PORT_HTTPS=3021
+stdout_logfile=/var/log/supervisor/%(program_name)s.log
+stderr_logfile=/var/log/supervisor/%(program_name)s.log
+autorestart=true
+
+[program:production.statistical-learning.jamesmcguigan.com]
+environment=
+command=/usr/bin/node /var/www/statistical-learning/Server.js NODE_ENV=production  PORT_HTTP=3022 PORT_HTTPS=3023
+stdout_logfile=/var/log/supervisor/%(program_name)s.log
+stderr_logfile=/var/log/supervisor/%(program_name)s.log
+autorestart=true
