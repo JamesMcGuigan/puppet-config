@@ -32,3 +32,7 @@ node /jamesmcguigan/ {
   include website_infographic_generator
   include website_liatandco
 }
+node /liatandco/ {
+  include role::server::webserver
+  include website_liatandco
+}
