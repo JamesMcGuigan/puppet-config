@@ -6,7 +6,7 @@ rm -rvf  /var/www-deploy/liatandco.com
 tar -xzf /root/build/liatandco.com.tgz -C /var/www-deploy/ &&
 cd /var/www-deploy/liatandco.com &&
 npm cache clean &&
-npm install &&
+npm install --production &&
 npm list 2>&1 | awk '/missing:/ { print $4 }' | sed 's/,//' | xargs npm install &&
 bower install --allow-root &&
 compass compile &&

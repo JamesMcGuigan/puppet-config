@@ -20,7 +20,7 @@ task :bootstrap, :hostname do |t, args|
 end
 
 
-desc "Run Puppet :package on :hostname | rake puppet[jamesmcguigan.com,deploy_liatandco]"
+desc "Run Puppet :package on :hostname | rake puppet[liatandco.com,liatandco]"
 task :puppet, :hostname, :package do |t, args|
     hostname = args[:hostname];
     package  = args[:package]  || "init"
