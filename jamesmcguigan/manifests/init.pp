@@ -23,9 +23,9 @@ class role::server::webserver inherits role::server {
   include nginx
   include sslcerts
   include rubygems
-  include mongodb
 }
 node /jamesmcguigan/ {
+  include mongodb
   include role::server::webserver
   include website_jamesmcguigan
   include website_statistical_learning
