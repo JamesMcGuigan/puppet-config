@@ -19,4 +19,22 @@ class website_liatandco {
     require => [ Package['nginx'], File['/etc/nginx/sites-enabled'] ],
     notify  => [ Service['nginx'] ]
   }
+
+  exec { 'n 0.10.39':
+    command => $operatingsystem ? { CentOS => '/usr/bin/n 0.10.39', Ubuntu => '/usr/local/bin/n 0.10.39' },
+  }
+
+  file { "/var/data/":
+    ensure => "directory",
+    owner  => "root",
+    mode   => 750,
+  }
+
+  cron { 'cron email backup /var/data/liatandco-ghost.db':
+    command => "date | mailx -s 'Liatandco.com Ghost Database Backup' -a /var/data/liatandco-ghost.db -r server@liatandco.com james.mcguigan+liandandco-backup@gmail.com",
+    user    => root,
+    hour    => '0',
+    minute  => '0',
+    environment => "PATH=/bin:/usr/bin:/usr/sbin"
+  }
 }

@@ -15,6 +15,9 @@ server {
     location / {
         proxy_pass  http://127.0.0.1:3003;
     }
+    location /blog {
+        proxy_pass  http://127.0.0.1:2002/blog;
+    }
     proxy_redirect     off;
 }
 

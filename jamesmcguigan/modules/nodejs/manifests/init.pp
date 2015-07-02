@@ -25,6 +25,11 @@ class nodejs {
     command => 'npm config set registry="http://registry.npmjs.org/"',
     require => [ Package['npm'] ]
   } ->
+  exec { 'n':
+    command => 'npm install -g n',
+    creates => $operatingsystem ? { CentOS => '/usr/bin/n', Ubuntu => '/usr/local/bin/n' },
+    require => [ Exec['npm-registry'] ]
+  } ->
   exec { 'bower':
     command => 'npm install -g bower',
     creates => $operatingsystem ? { CentOS => '/usr/bin/bower', Ubuntu => '/usr/local/bin/bower' },

@@ -33,6 +33,7 @@ node /jamesmcguigan/ {
   include website_liatandco
 }
 node /liatandco/ {
+  include mailx
   include role::server::webserver
   include website_liatandco
 }

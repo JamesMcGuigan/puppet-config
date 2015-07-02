@@ -1,6 +1,17 @@
 [program:liatandco.com]
-environment=
-command=/usr/bin/node /var/www/liatandco.com/Server.js NODE_ENV=production PORT_HTTP=3003
-stdout_logfile=/var/log/supervisor/%(program_name)s.log
-stderr_logfile=/var/log/supervisor/%(program_name)s.log
-autorestart=true
+command        = /usr/bin/node /var/www/liatandco.com/Server.js NODE_ENV=production PORT_HTTP=3003
+stdout_logfile = /var/log/supervisor/%(program_name)s.log
+stderr_logfile = /var/log/supervisor/%(program_name)s.log
+autostart      = true
+autorestart    = true
+environment    = NODE_ENV="production"
+
+# Ghost runs on port 2002
+[program:liatandco.com-ghost-blog]
+command        = /usr/bin/node /var/www/liatandco.com/ghost/Ghost.js
+directory      = /var/www/liatandco.com/ghost/
+autostart      = true
+autorestart    = true
+stdout_logfile = /var/log/supervisor/liatandco-ghost-access.log
+stderr_logfile = /var/log/supervisor/liatandco-ghost-error.log
+environment    = NODE_ENV="production"
