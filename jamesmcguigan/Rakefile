@@ -84,7 +84,7 @@ end
 desc "Check Puppet and package.json syntax before deploy"
 task :syntax do
     sh 'find ./ -name "*.pp" | xargs puppet parser validate'
-    sh 'find ./ -name "*.pp" -print -exec puppet-lint --no-names_containing_dash-check  --no-double_quoted_strings-check --no-arrow_alignment-check --no-80chars-check --no-documentation-check --no-variable_scope-check --no-2sp_soft_tabs-check {} \;'
+    sh 'find ./ -name "*.pp" -print -exec puppet-lint --no-names_containing_dash-check  --no-double_quoted_strings-check --no-arrow_alignment-check --no-documentation-check --no-variable_scope-check --no-2sp_soft_tabs-check {} \;'
 
     # npm install -g jsonlint
     sh 'find ../ -depth 2 -name package.json | xargs -t -L1 jsonlint -q'
