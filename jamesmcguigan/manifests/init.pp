@@ -30,7 +30,6 @@ node /jamesmcguigan/ {
   include website_jamesmcguigan
   include website_statistical_learning
   include website_infographic_generator
-  include website_liatandco
 }
 node /liatandco/ {
   include mailx
