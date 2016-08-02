@@ -1,4 +1,4 @@
-class build-tools {
+class build_tools {
   case $::operatingsystem {
     Ubuntu: {
       package { 'linux-headers-generic': ensure  => installed }

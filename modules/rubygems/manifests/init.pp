@@ -1,5 +1,5 @@
 class rubygems {
-  require build-tools
+  require build_tools
 
   case $::operatingsystem {
     Ubuntu: {}

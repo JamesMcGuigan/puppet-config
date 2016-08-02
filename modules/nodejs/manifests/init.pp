@@ -1,6 +1,6 @@
 class nodejs {
 
-  require build-tools
+  require build_tools
 
   file { ['/var/log/node']:
     ensure  => directory,

@@ -18,7 +18,7 @@ class role::server::webserver inherits role::server {
   include sshd
   include ntp
   include bash
-  include build-tools
+  include build_tools
   include nodejs
   include nginx
   include sslcerts
