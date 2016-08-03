@@ -29,8 +29,12 @@ ssh root@liatandco.com 'puppet apply --modulepath=/root/puppet/modules/ /root/pu
 ## [jamesmcguigan.com](http://www.jamesmcguigan.com)
 
 ```sh
-rake puppet[jamesmcguigan.com,init]   # update server and deploy
-rake puppet[jamesmcguigan.com,deploy] # just update website content
+rake bootstrap[jamesmcguigan.com]                    # install puppet and basic tools before first run 
+rake puppet[jamesmcguigan.com,init]                  # update server and deploy
+rake puppet[jamesmcguigan.com,deploy]                # just update website content
+rake puppet[jamesmcguigan.com,jamesmcguigan]         # single website
+rake puppet[jamesmcguigan.com,infographic-generator] # single website
+rake puppet[jamesmcguigan.com,statistical-learning]  # single website
 ```
 ```
 Applying puppet to root@jamesmcguigan.com with package manifests/init.pp

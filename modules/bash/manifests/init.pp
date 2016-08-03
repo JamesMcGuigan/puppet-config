@@ -10,8 +10,8 @@ class bash {
   package { 'nmap':            ensure  => installed }
   package { 'screen':          ensure  => installed }
   package { 'wget':            ensure  => installed }
-  package { 'ImageMagick':     ensure  => installed }
-  package { 'GraphicsMagick':  ensure  => installed }
+  package { 'imagemagick':     ensure  => installed }
+  package { 'graphicsmagick':  ensure  => installed }
 
 
 

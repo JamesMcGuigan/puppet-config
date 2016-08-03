@@ -17,18 +17,18 @@ class nodejs {
     ensure => link,
     target => "/usr/bin/nodejs",
   } ->
-  package { 'npm':
-    ensure  => installed,
-    require => Package['nodejs'],
-  } ->
-  exec { 'npm-registry':
-    command => 'npm config set registry="http://registry.npmjs.org/"',
-    require => [ Package['npm'] ]
-  } ->
   exec { 'n':
     command => 'npm install -g n',
     creates => $operatingsystem ? { CentOS => '/usr/bin/n', Ubuntu => '/usr/local/bin/n' },
-    require => [ Exec['npm-registry'] ]
+  } ->
+  exec { 'n stable':
+    command => 'n stable',
+  } ->
+  exec { 'npm':
+    command => 'npm install -g npm',
+  } ->
+  exec { 'npm-registry':
+    command => 'npm config set registry="http://registry.npmjs.org/"',
   } ->
   exec { 'bower':
     command => 'npm install -g bower',

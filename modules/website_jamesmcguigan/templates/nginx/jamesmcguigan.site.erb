@@ -1,4 +1,13 @@
-#server   {
-#    server_name jamesmcguigan.com www.jamesmcguigan.com;
-#    rewrite  ^/(.*)$  http://infographic.jamesmcguigan.com/ permanent;
-#}
+server {
+    server_name  jamesmcguigan.com www.jamesmcguigan.com;
+    include     "/etc/nginx/conf/server_http_defaults.conf";
+
+    access_log   /var/log/nginx/jamesmcguigan-access.log;
+    error_log    /var/log/nginx/jamesmcguigan-error.log;
+
+    location / {
+      index index.html;
+      root /var/www/jamesmcguigan.com/jekyll/_site/;
+    }
+
+}

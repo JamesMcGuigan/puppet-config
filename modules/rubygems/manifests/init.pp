@@ -16,7 +16,7 @@ class rubygems {
     }
   }
 
-  package { 'ruby':
+  package { ['ruby', 'ruby-dev']:
     ensure  => installed,
   } ->
   exec { 'rake':
@@ -27,8 +27,11 @@ class rubygems {
     command => 'gem install compass susy',
     creates => $operatingsystem ? { CentOS => '/usr/bin/compass', Ubuntu => '/usr/local/bin/compass' },
     require => [ Exec['rake'] ]
-  }
-
+  } ->
+  exec { 'jekyll':
+    command => 'gem install jekyll',
+    creates => $operatingsystem ? { CentOS => '/usr/bin/jekyll', Ubuntu => '/usr/local/bin/jekyll' },
+  } ->
   package { 'bundler':
     ensure  => installed,
   }
