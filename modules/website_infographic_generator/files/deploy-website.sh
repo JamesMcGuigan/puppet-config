@@ -5,8 +5,9 @@ mkdir -p /var/www-deploy/ &&
 rm -rvf  /var/www-deploy/infographic-generator
 tar -xzf /root/build/infographic-generator.tgz -C /var/www-deploy/ &&
 cd /var/www-deploy/infographic-generator &&
+
 npm cache clean &&
-npm install &&
+npm install --no-optional &&  # --no-optional: fixes Not compatible with your operating system or architecture: fsevents@1.0.14
 npm list 2>&1 | awk '/missing:/ { print $4 }' | sed 's/,//' | xargs npm install &&
 bower install --allow-root &&
 compass compile &&
