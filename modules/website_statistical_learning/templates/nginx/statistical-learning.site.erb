@@ -19,7 +19,8 @@ server {
     ssl_certificate_key  /var/sslcerts/statistical-learning.san.key;
 
     location / {
-        proxy_pass  http://127.0.0.1:3021;
+        proxy_pass  http://127.0.0.1:3020;   # internal proxy to unencrypted node http endpoint
+        #proxy_pass  https://127.0.0.1:3021; # https proxy triggers 502 Bad Gateway
     }
 }
 
@@ -45,6 +46,7 @@ server {
     ssl_certificate_key  /var/sslcerts/statistical-learning.san.key;
 
     location / {
-        proxy_pass  http://127.0.0.1:3023;
+        proxy_pass  http://127.0.0.1:3022;    # internal proxy to unencrypted node http endpoint
+        #proxy_pass  https://127.0.0.1:3023;  # https proxy triggers 502 Bad Gateway
     }
 }

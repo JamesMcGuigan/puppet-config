@@ -19,7 +19,8 @@ server {
     ssl_certificate_key  /var/sslcerts/infographic-generator.san.key;
 
     location / {
-        proxy_pass  http://127.0.0.1:3011;
+        proxy_pass  http://127.0.0.1:3010;  # internal proxy to unencrypted node http endpoint
+        #proxy_pass https://127.0.0.1:3011; # https proxy triggers 502 Bad Gateway
     }
 }
 
@@ -45,6 +46,7 @@ server {
     ssl_certificate_key  /var/sslcerts/infographic-generator.san.key;
 
     location / {
-        proxy_pass  http://127.0.0.1:3013;
+        proxy_pass  http://127.0.0.1:3012; # internal proxy to unencrypted node http endpoint
+        #proxy_pass http://127.0.0.1:3013; # https proxy triggers 502 Bad Gateway
     }
 }
