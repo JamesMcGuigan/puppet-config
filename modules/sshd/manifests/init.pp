@@ -14,8 +14,8 @@ class sshd {
     context => "/files/etc/ssh/sshd_config",
     changes => [
       'set PermitRootLogin        yes', # without-password',
-      'set RSAAuthentication      yes',
-      'set PubkeyAuthentication   yes',
+      'set RSAAuthentication      yes', # ssh V1
+      'set PubkeyAuthentication   yes', # ssh V2
       'set PasswordAuthentication yes',
       'set AuthorizedKeysFile     %h/.ssh/authorized_keys'
     ],
@@ -27,4 +27,4 @@ class sshd {
     hasstatus => true,
     require   => Package['openssh-server']
   }
-}
+}                       x
