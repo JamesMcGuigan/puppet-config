@@ -50,6 +50,11 @@ class nodejs {
     creates => $operatingsystem ? { CentOS => '/usr/bin/uglifyjs', Ubuntu => '/usr/local/bin/uglifyjs' },
     require => [ Exec['npm-registry'] ]
   } ->
+  exec { 'webpack':
+    command => 'npm install -g webpack',
+    creates => $operatingsystem ? { CentOS => '/usr/bin/webpack', Ubuntu => '/usr/local/bin/webpack' },
+    require => [ Exec['npm-registry'] ]
+  } ->
   file { $operatingsystem ? { CentOS => '/usr/bin/jsl', Ubuntu => '/usr/local/bin/jsl' }:
     ensure  => 'link',
     target  => $operatingsystem ? { CentOS => '/usr/bin/jslint', Ubuntu => '/usr/local/bin/jslint' },

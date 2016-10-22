@@ -27,4 +27,4 @@ class sshd {
     hasstatus => true,
     require   => Package['openssh-server']
   }
-}                       x
+}

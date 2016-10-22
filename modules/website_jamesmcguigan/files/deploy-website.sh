@@ -6,7 +6,9 @@ rm -rvf  /var/www-deploy/jamesmcguigan.com
 tar -xzf /root/build/jamesmcguigan.com.tgz -C /var/www-deploy/ &&
 cd /var/www-deploy/jamesmcguigan.com &&
 
-(cd ./jekyll/; jekyll build;) &&  # needs to be `gem install jekyll` and not `apt-get install jekyll`
+npm update &&
+webpack --optimize-minimize --optimize-dedupe &&
+(cd ./jekyll/; jekyll clean; jekyll build;) &&  # different cli syntax to OSX jekyll; needs to be `gem install jekyll` and not `apt-get install jekyll`
 
 (if [ -d /var/www-deploy/jamesmcguigan.com ]; then
     if [ -d /var/www/jamesmcguigan.com ]; then
