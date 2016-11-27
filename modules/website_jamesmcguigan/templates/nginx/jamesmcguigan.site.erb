@@ -1,13 +1,36 @@
 server {
-    server_name  jamesmcguigan.com www.jamesmcguigan.com;
-    include     "/etc/nginx/conf/server_http_defaults.conf";
+    include      /etc/nginx/conf/server_http_defaults.conf;
+
+    server_name_in_redirect on;
+    server_name  jamesmcguigan.com
+                 www.jamesmcguigan.com
+                 _;
 
     access_log   /var/log/nginx/jamesmcguigan-access.log;
     error_log    /var/log/nginx/jamesmcguigan-error.log;
 
     location / {
       index index.html;
-      root /var/www/jamesmcguigan.com/jekyll-static/;
+      root  /var/www/jamesmcguigan.com/jekyll-static/;
     }
 
+}
+
+server {
+  include              /etc/nginx/conf/server_https_defaults.conf;
+
+  server_name_in_redirect on;
+  server_name          jamesmcguigan.com
+                       www.jamesmcguigan.com
+                       _;
+
+  access_log           /var/log/nginx/jamesmcguigan-access.log;
+  error_log            /var/log/nginx/jamesmcguigan-error.log;
+  ssl_certificate      /var/sslcerts/jamesmcguigan.san.crt;
+  ssl_certificate_key  /var/sslcerts/jamesmcguigan.san.key;
+
+  location / {
+    index index.html;
+    root  /var/www/jamesmcguigan.com/jekyll-static/;
+  }
 }

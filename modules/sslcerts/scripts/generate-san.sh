@@ -9,10 +9,10 @@ cd    "$(dirname "$0")"
 Country=GB
 State=London
 City=London
-Organization="Crystalline Technologies"
+Organization="James McGuigan"
 Section=""
 FQDN=jamesmcguigan.com
-Email=james.mcguigan@gmail.com
+Email=james.mcguigan.github@gmail.com
 
 
 ## Generate Private Key
