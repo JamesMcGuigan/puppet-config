@@ -1,4 +1,5 @@
 # http://www.craigdunn.org/2012/05/239/
+class role {}
 class role::server {
   Exec { path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin', logoutput => true, }
 
@@ -26,13 +27,12 @@ class role::server::webserver inherits role::server {
 }
 node /jamesmcguigan/ {
   include mongodb
-  include role::server::webserver
-  include website_jamesmcguigan
-  include website_statistical_learning
-  include website_infographic_generator
+  #include php::php4
+  contain php::php5
+  include website_deploy::all
 }
 node /liatandco/ {
   include mailx
-  include role::server::webserver
   include website_liatandco
+  include website_liatandco::deploy
 }
