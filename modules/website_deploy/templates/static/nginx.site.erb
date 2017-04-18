@@ -1,0 +1,31 @@
+server {
+  server_name <% @domains.each do |domain| %> <%= domain %><% end %>;
+  include     "/etc/nginx/conf/server_http_defaults.conf";
+
+  access_log   /var/log/nginx/<%= @name %>-access.log;
+  error_log    /var/log/nginx/<%= @name %>-error.log;
+
+  location / {
+    autoindex on;
+    index index.html;
+<% if( @name == "starsfaq.com" ) -%>
+    index index.htm index.html;
+<% end -%>
+<% if( @name == "earthemergency.org" ) -%>
+    index call.htm;
+<% end -%>
+
+<% if( @port ) -%>
+    proxy_pass  http://127.0.0.1:<%= @port %>;
+<% else -%>
+    root /var/www/<%= @name %>/current/;
+<% end -%>
+  }
+
+  location ~ \.php$ {
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_pass 127.0.0.1:9000;
+    fastcgi_index index.php;
+    include fastcgi_params;
+  }
+}

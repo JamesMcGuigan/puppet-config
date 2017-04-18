@@ -1,8 +1,7 @@
 node /jamesmcguigan/ {
-  include website_jamesmcguigan::deploy
-  include website_infographic_generator::deploy
-  include website_statistical_learning::deploy
+  include website_deploy::all
 }
 node /liatandco/ {
+  include website_liatandco
   include website_liatandco::deploy
 }

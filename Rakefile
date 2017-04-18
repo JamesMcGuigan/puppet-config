@@ -14,7 +14,8 @@ task :bootstrap, :hostname do |t, args|
   commands = <<-EOF
     ssh-keyscan -H github.com | tee -a /etc/ssh/ssh_known_hosts
     apt-get update  -y
-    apt-get install -y puppet git rsync
+    apt-get install -y puppet git rsync rubygems-integration
+    gem install librarian-puppet
   EOF
   sh "ssh #{username}@#{hostname} '#{commands}'"
 end
@@ -31,6 +32,8 @@ task :puppet, :hostname, :package do |t, args|
         Rake::Task["rsync_puppet"].execute(args)
 
         commands = <<-BOOTSTRAP
+            cd /root/puppet/
+            librarian-puppet install;
             puppet apply --modulepath=/root/puppet/modules/ /root/puppet/manifests/#{package}.pp --verbose --summarize --debug
         BOOTSTRAP
         sh "ssh #{username}@#{hostname} '#{commands}'"
@@ -44,9 +47,9 @@ task :deploy, :hostname, :package do |t, args|
 end
 
 desc "Rsync deploy ~/websites/:website to #{username}@:hostname:/var/www/"
-task :rsync_deploy, :hostname, :website do |t, args|
+task :rsync_deploy, :hostname, :website_deploy do |t, args|
     hostname = args[:hostname] || ""
-    website  = args[:website]  || args[:hostname]
+    website  = args[:website_deploy]  || args[:hostname]
 
     sh "rsync -arz --delete --exclude 'puppet' --exclude 'data' ~/websites/#{website}      #{username}@#{hostname}:/var/www/"
     sh "rsync -arz ~/websites/#{website}/data #{username}@#{hostname}:/var/www/#{website}/"
@@ -76,7 +79,7 @@ desc "rsync puppet to :hostname"
 task :rsync_puppet, :hostname do |t, args|
   hostname = args[:hostname]
 
-  sh "rsync -arz --delete --exclude '.vagrant' ./ #{username}@#{hostname}:puppet"
+  sh "rsync -arz --delete --exclude '.vagrant' --exclude '.git' --exclude 'modules/vcsrepo' --exclude 'modules/stdlib' ./ #{username}@#{hostname}:puppet"
 end
 
 
@@ -84,10 +87,10 @@ end
 desc "Check Puppet and package.json syntax before deploy"
 task :syntax do
     sh 'find ./ -name "*.pp" | xargs puppet parser validate'
-    sh 'find ./ -name "*.pp" -print -exec puppet-lint --no-names_containing_dash-check  --no-double_quoted_strings-check --no-arrow_alignment-check --no-documentation-check --no-variable_scope-check --no-2sp_soft_tabs-check {} \;'
+    #sh 'find ./ -name "*.pp" -print -exec puppet-lint --no-names_containing_dash-check  --no-double_quoted_strings-check --no-arrow_alignment-check --no-documentation-check --no-variable_scope-check --no-2sp_soft_tabs-check {} \;'
 
     # npm install -g jsonlint
-    sh 'find ../ -depth 2 -name package.json | xargs -t -L1 jsonlint -q'
+    #sh 'find ../ -depth 2 -name package.json | xargs -t -L1 jsonlint -q'
 end
 
 desc "Check code has been fully pushed to github"
