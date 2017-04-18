@@ -6,14 +6,16 @@ define website_deploy (
   $port     = false,
   $config   = $name
 ) {
-  contain supervisor
-  contain nginx
+  include supervisor
+  include nginx
+  case $config {
+    "static": {  }
+    "php":    { include apache_php }
+  }
 
   case $provider {
-    'git': {
-      $commit_id = generate("/bin/bash", "/root/puppet/modules/website_deploy/files/github-commit-id.sh", "$source", "/root/github/${name}", "$revision")
-    }
-    default: { $commit_id = generate ("/bin/bash", "-c", "date +'%F-%H%M'") }
+    'git':   { $commit_id = generate("/bin/bash", "/root/puppet/modules/website_deploy/files/github-commit-id.sh", "$source", "/root/github/${name}", "$revision") }
+    default: { $commit_id = generate("/bin/bash", "-c", "date +'%F-%H%M'") }
   }
 
   file { "/var/www/${name}/": ensure => directory, owner => root, group => root, mode => '0755' } ->
@@ -40,26 +42,48 @@ define website_deploy (
     ensure => "link",
     target => "/var/www/${name}/${commit_id}",
     owner => root, group => root, mode => '0755'
-  } ->
-
-
-  file { "/etc/supervisor/conf.d/${name}.conf":
-    content => template("website_deploy/${config}/supervisor.conf.erb"),
-    # validate_cmd => "test -f /root/puppet/modules/website_deploy/templates/${name}/supervisor.conf.erb",
-    owner   => root,
-    group   => root,
-    mode   => '0644',
-    require => [ Package['supervisor'] ],
-    notify  => Service[$supervisor::supervisord],
-  } ->
-
-  file { "/etc/nginx/sites-enabled/${name}.site":
-    content => template("website_deploy/${config}/nginx.site.erb"),
-    # validate_cmd => "test -f /root/puppet/modules/website_deploy/templates/${name}/nginx.site.erb",
-    owner   => root,
-    group   => root,
-    mode   => '0644',
-    require => [ Package['nginx'], File['/etc/nginx/sites-enabled'] ],
-    notify  => [ Service['nginx'] ]
   }
+
+  case $config {
+    "static": {
+      file { "/etc/nginx/sites-enabled/${name}.site":
+        content => template("website_deploy/${config}/nginx.site.erb"),
+        # validate_cmd => "test -f /root/puppet/modules/website_deploy/templates/${name}/nginx.site.erb",
+        owner   => root,
+        group   => root,
+        mode    => '0644',
+        require => [ Package['nginx'], File['/etc/nginx/sites-enabled'] ], # Error: Failed to apply catalog: Found 2 dependency cycles:
+        notify  => [ Service['nginx'] ]
+      }
+    }
+    "php": {
+      file { "/etc/nginx/sites-enabled/${name}.site":
+        content => template("website_deploy/${config}/nginx.site.erb"),
+        owner   => root,
+        group   => root,
+        mode    => '0644',
+        require => [ Package['nginx'], File['/etc/nginx/sites-enabled'] ],
+        notify  => [ Service['nginx'] ]
+      }
+      file { "/etc/apache2/sites-enabled/${name}.conf":
+        content => template("website_deploy/${config}/apache.conf.erb"),
+        owner   => root,
+        group   => root,
+        mode    => '0644',
+        require => [ Package['apache2'] ], # Error: Failed to apply catalog: Found 2 dependency cycles:
+        notify  => [ Service['apache2'] ]
+      }
+    }
+    "node": {
+      file { "/etc/supervisor/conf.d/${name}.conf":
+        content => template("website_deploy/${config}/supervisor.conf.erb"),
+        owner   => root,
+        group   => root,
+        mode    => '0644',
+        require => [ Package['supervisor'] ], # Error: Failed to apply catalog: Found 2 dependency cycles:
+        notify  => Service[$supervisor::supervisord],
+      }
+    }
+  }
+
 }

@@ -28,7 +28,8 @@ class role::server::webserver inherits role::server {
 node /jamesmcguigan/ {
   include mongodb
   #include php::php4
-  contain php::php5
+  include php::php5
+  include apache_php
   include website_deploy::all
 }
 node /liatandco/ {
