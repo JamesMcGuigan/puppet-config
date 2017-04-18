@@ -2,7 +2,6 @@ export   SHELL=bash
 export  EDITOR=vim
 export   PAGER=less
 export    LESS=-R
-export GREP_OPTIONS='--color'
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 export PATH=$PATH:/usr/lib/jvm/java-7-oracle/bin
 export PATH=$PATH:./node_modules/.bin
