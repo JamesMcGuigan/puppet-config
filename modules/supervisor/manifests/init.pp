@@ -20,13 +20,13 @@ class supervisor {
     mode    => '0755',
     owner   => 'root',
     group   => 'root'
-  }
+  } ->
 
   # Supervisord restart doesn't reload the configuration - service reload will
   # However puppet notify calls service stop && service start - which will reload the config
   file { '/etc/supervisord.conf':
     name    => '/etc/supervisord.conf',
-    content => 'supervisor/supervisord.conf.erb',
+    source => 'puppet:///modules/supervisor/supervisord.conf',
     owner   => root,
     group   => root,
     mode    => '0644',
