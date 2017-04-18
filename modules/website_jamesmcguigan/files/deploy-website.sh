@@ -15,7 +15,7 @@ webpack --optimize-dedupe --optimize-minimize
 (if [ -d /var/www-deploy/jamesmcguigan.com ]; then
     if [ -d /var/www/jamesmcguigan.com ]; then
         mkdir -p /var/www-backup/jamesmcguigan.com
-        cd /var/www-backup/jamesmcguigan.com/; ls -1t | tail -n +10 | xargs rm -rvf # remove all but last 10 backups
+        cd /var/www-backup/jamesmcguigan.com/; ls -1t | tail -n +3 | xargs rm -rvf # remove all but last 3 backups
 
         mv /var/www/jamesmcguigan.com /var/www-backup/jamesmcguigan.com/`date +'%F_%H%M-%S'`
     fi

@@ -14,7 +14,7 @@ compass compile &&
 (if [ -d /var/www-deploy/liatandco.com ]; then
     if [ -d /var/www/liatandco.com ]; then
         mkdir -p /var/www-backup/liatandco.com
-        cd /var/www-backup/liatandco.com/; ls -1t | tail -n +10 | xargs rm -rvf # remove all but last 10 backups
+        cd /var/www-backup/liatandco.com/; ls -1t | tail -n +3 | xargs rm -rvf # remove all but last 3 backups
 
         mv /var/www/liatandco.com /var/www-backup/liatandco.com/`date +'%F_%H%M-%S'`
     fi

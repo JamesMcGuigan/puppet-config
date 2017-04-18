@@ -15,7 +15,7 @@ compass compile &&
 (if [ -d /var/www-deploy/statistical-learning ]; then
     if [ -d /var/www/statistical-learning ]; then
         mkdir -p /var/www-backup/statistical-learning
-        cd /var/www-backup/statistical-learning/; ls -1t | tail -n +10 | xargs rm -rvf # remove all but last 10 backups
+        cd /var/www-backup/statistical-learning/; ls -1t | tail -n +3 | xargs rm -rvf # remove all but last 3 backups
 
         mv /var/www/statistical-learning /var/www-backup/statistical-learning/`date +'%F_%H%M-%S'`
     fi

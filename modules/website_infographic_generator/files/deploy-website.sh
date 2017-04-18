@@ -15,7 +15,7 @@ compass compile &&
 (if [ -d /var/www-deploy/infographic-generator ]; then
     if [ -d /var/www/infographic-generator ]; then
         mkdir -p /var/www-backup/infographic-generator
-        cd /var/www-backup/infographic-generator/; ls -1t | tail -n +10 | xargs rm -rvf # remove all but last 10 backups
+        cd /var/www-backup/infographic-generator/; ls -1t | tail -n +3 | xargs rm -rvf # remove all but last 3 backups
 
         mv /var/www/infographic-generator /var/www-backup/infographic-generator/`date +'%F_%H%M-%S'`
     fi
