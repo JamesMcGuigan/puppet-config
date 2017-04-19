@@ -52,7 +52,7 @@ define website_deploy (
         owner   => root,
         group   => root,
         mode    => '0644',
-        require => [ Package['nginx'], File['/etc/nginx/sites-enabled'] ], # Error: Failed to apply catalog: Found 2 dependency cycles:
+        require => [ Package['nginx'], File['/etc/nginx/sites-enabled'] ],
         notify  => [ Service['nginx'] ]
       }
     }
@@ -70,7 +70,7 @@ define website_deploy (
         owner   => root,
         group   => root,
         mode    => '0644',
-        require => [ Package['apache2'] ], # Error: Failed to apply catalog: Found 2 dependency cycles:
+        require => [ Package['apache2'] ],
         notify  => [ Service['apache2'] ]
       }
     }
@@ -80,7 +80,7 @@ define website_deploy (
         owner   => root,
         group   => root,
         mode    => '0644',
-        require => [ Package['supervisor'] ], # Error: Failed to apply catalog: Found 2 dependency cycles:
+        require => [ Package['supervisor'] ],
         notify  => Service[$supervisor::supervisord],
       }
     }
