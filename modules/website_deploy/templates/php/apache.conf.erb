@@ -1,18 +1,20 @@
-NameVirtualHost *
 <VirtualHost *>
   ServerAdmin james.mcguigan@gmail.com
 
-  ServerName <%= @domains[0] %>
-<% @domains.each do |domain| %>
+<% @domains.each do |domain| -%>
   ServerAlias <%= domain %>
-<% end %>
+<% end -%>
   DocumentRoot /var/www/<%= @name %>/current
+  DirectoryIndex index.php index.html index.htm
+<% if( @name == "francescagiordano.com" ) -%>
+    DirectoryIndex articles.htm
+<% end -%>
+
 
   <Directory />
     Options FollowSymLinks
     AllowOverride None
   </Directory>
-
   <Directory /var/www/<%= @name %>/current>
     Options Indexes FollowSymLinks MultiViews
     AllowOverride All
@@ -28,6 +30,12 @@ NameVirtualHost *
     Allow from all
   </Directory>
 
+  <FilesMatch \.html?$>
+      SetHandler application/x-httpd-php
+  </FilesMatch>
+  <FilesMatch \.php$>
+      SetHandler application/x-httpd-php
+  </FilesMatch>
 
   # Possible values include: debug, info, notice, warn, error, crit,
   # alert, emerg.

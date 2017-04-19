@@ -13,7 +13,8 @@ server {
   add_header              Front-End-Https   on;
 
   location / {
-    proxy_pass  http://127.0.0.1:81;
+    proxy_set_header Host <%= @domains[0] %>;
+    proxy_pass       http://127.0.0.1:81;
   }
   proxy_redirect     off;
 }

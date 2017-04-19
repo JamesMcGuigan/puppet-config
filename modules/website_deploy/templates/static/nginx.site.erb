@@ -7,15 +7,13 @@ server {
 
   location / {
     autoindex on;
-    index index.html;
-<% if( @name == "starsfaq.com" ) -%>
     index index.htm index.html;
-<% end -%>
 <% if( @name == "earthemergency.org" ) -%>
     index call.htm;
 <% end -%>
 
 <% if( @port ) -%>
+    proxy_set_header Host <%= @domains[0] %>;
     proxy_pass  http://127.0.0.1:<%= @port %>;
 <% else -%>
     root /var/www/<%= @name %>/current/;
