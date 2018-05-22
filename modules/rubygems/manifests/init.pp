@@ -16,8 +16,8 @@ class rubygems {
     }
   }
 
-  package { ['ruby', 'ruby-dev']:
-    ensure  => installed,
+  package { ['ruby', 'ruby-dev', 'jekyll']:
+    ensure  => latest,
   } ->
   exec { 'rake':
     command => 'gem install rake',
@@ -28,10 +28,11 @@ class rubygems {
     creates => $operatingsystem ? { CentOS => '/usr/bin/compass', Ubuntu => '/usr/local/bin/compass' },
     require => [ Exec['rake'] ]
   } ->
-  exec { 'jekyll':
-    command => 'gem install jekyll',
-    creates => $operatingsystem ? { CentOS => '/usr/bin/jekyll', Ubuntu => '/usr/local/bin/jekyll' },
-  } ->
+  ###  gem install jekyll -> ERROR:  Error installing jekyll: public_suffix requires Ruby version >= 2.1.
+  # exec { 'jekyll':
+  #   command => 'gem install jekyll',
+  #   creates => $operatingsystem ? { CentOS => '/usr/bin/jekyll', Ubuntu => '/usr/local/bin/jekyll' },
+  # } ->
   package { 'bundler':
     ensure  => installed,
   }

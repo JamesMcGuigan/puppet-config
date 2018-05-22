@@ -11,19 +11,24 @@ class nodejs {
 
 
   package { 'nodejs':
-    ensure  => installed
+    ensure  => latest
   } ->
   file { "/usr/bin/node":
     ensure => link,
     target => "/usr/bin/nodejs",
   } ->
+  ### n installs to /usr/local/n/versions/node/10.1.0/bin/node -> /usr/local/bin/node
   exec { 'n':
     command => 'npm install -g n',
     creates => $operatingsystem ? { CentOS => '/usr/bin/n', Ubuntu => '/usr/local/bin/n' },
   } ->
-  exec { 'n stable':
-    command => 'n stable',
+  exec { 'n latest':
+    command => 'n latest; n latest',  # $? returns invalid error code if version of node has changed
   } ->
+  ### liatandco.com requires Ghost ^0.6.4 -> requires node 0.10.39 -> does not support yarn
+  # exec { 'yarn':
+  #   command => 'npm install -g yarn',
+  # } ->
   exec { 'npm':
     command => 'npm install -g npm',
   } ->

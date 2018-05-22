@@ -20,9 +20,10 @@ class website_liatandco {
     notify  => [ Service['nginx'] ]
   }
 
+  ### Ghost ^0.6.4 requires node 0.10.39 - does not support yarn
   exec { 'n 0.10.39':
-    command => $operatingsystem ? { CentOS => '/usr/bin/n 0.10.39', Ubuntu => '/usr/local/bin/n 0.10.39' },
-  }
+    command => '/usr/bin/env n 0.10.39; /usr/bin/env n 0.10.39', # returns invalid error code if version of node has changed
+  } ->
 
   file { "/var/data/":
     ensure => "directory",

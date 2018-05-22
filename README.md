@@ -3,6 +3,7 @@
 ```sh
 sudo gem install puppet
 sudo gem install puppet-lint
+sudo apt-get install librarian-puppet
 ```
 
 # [Rakefile](Rakefile)
