@@ -4,7 +4,6 @@ export HOME=/root   # node-gyp requires that the user's home directory is specif
 cd /root/github/infographic-generator/
 
 bundle install &&
-npm cache clean &&
 npm install --no-optional &&  # --no-optional: fixes Not compatible with your operating system or architecture: fsevents@1.0.14
 npm list 2>&1 | awk '/missing:/ { print $4 }' | sed 's/,//' | xargs npm install &&
 yes | bower install --allow-root &&

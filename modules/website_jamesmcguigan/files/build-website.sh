@@ -3,7 +3,6 @@ export HOME=/root   # node-gyp requires that the user's home directory is specif
 
 cd /root/github/jamesmcguigan.com/
 bundle install &&
-npm cache clean &&
 npm update &&
 
 mkdir -p /root/build/ &&

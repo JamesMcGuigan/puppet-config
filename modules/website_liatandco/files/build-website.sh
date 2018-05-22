@@ -3,7 +3,6 @@ export HOME=/root   # node-gyp requires that the user's home directory is specif
 
 cd /root/github/liatandco.com/
 bundle install &&
-npm cache clean &&
 npm install --production &&
 npm list 2>&1 | awk '/missing:/ { print $4 }' | sed 's/,//' | xargs npm install &&
 yes | bower install --allow-root &&
